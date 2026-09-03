@@ -1,0 +1,64 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [ main ]        # 每次推送到 main 都构建，产物上传到 Artifact 供测试
+    tags: [ 'v*' ]             # 打 v 开头的 tag 时同时创建 GitHub Release 并挂载安装包
+  workflow_dispatch:           # 页面上可手动触发
+
+jobs:
+  build:
+    name: Build Windows x64 (NSIS Installer)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build installer (electron-builder)
+        env:
+          # GitHub Actions runners 默认从官方源下载 Electron / NSIS / winCodeSign
+          # 如遇下载缓慢，可取消下面两行注释启用 npmmirror 镜像：
+          # ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
+          # ELECTRON_BUILDER_BINARIES_MIRROR: https://npmmirror.com/mirrors/electron-builder-binaries/
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run build
+
+      - name: Collect build artifacts
+        id: collect
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem dist -Filter "*.exe" | Select-Object -First 1
+          if (-not $exe) { Write-Error "No installer .exe found in dist/" ; exit 1 }
+          Write-Host "Installer: $($exe.Name)  size=$([math]::Round($exe.Length/1MB,2))MB"
+          "EXE_NAME=$($exe.Name)"       | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "EXE_PATH=$($exe.FullName)"   | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Upload installer as Artifact (保留 90 天)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SteamFT-Setup
+          path: ${{ env.EXE_PATH }}
+          retention-days: 90
+
+      - name: Create GitHub Release + attach installer (tag push only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SteamFT ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            ${{ env.EXE_PATH }}
+            dist/*.blockmap
+            dist/builder-debug.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

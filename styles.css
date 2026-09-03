@@ -1,0 +1,308 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", -apple-system, sans-serif;
+  background: #1b2838;
+  color: #c7d5e0;
+  font-size: 14px;
+  -webkit-user-select: none;
+}
+
+main {
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 顶栏 */
+.topbar {
+  background: #171a21;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid #000;
+}
+.brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #66c0f4;
+  letter-spacing: 1px;
+}
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.muted { color: #8f98a0; font-size: 12px; }
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-off { background: #4c5844; color: #c7d5e0; }
+.badge-on  { background: #5c7e10; color: #fff; }
+.badge-err { background: #a34c28; color: #fff; }
+
+/* 卡片 */
+.card {
+  background: #1e2a36;
+  border-radius: 6px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+.card h2 {
+  font-size: 16px;
+  color: #66c0f4;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #2a3f5a;
+  padding-bottom: 8px;
+}
+.card h3 {
+  font-size: 13px;
+  color: #99b9d9;
+  margin: 12px 0 8px;
+}
+
+/* 表单 */
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field.col2 { grid-column: span 2; }
+.field span { font-size: 12px; color: #99b9d9; }
+input[type="text"], input[type="password"], input[type="number"], input[type="search"], select {
+  background: #2a3f5a;
+  border: 1px solid #000;
+  border-radius: 3px;
+  color: #fff;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+}
+input:focus { border-color: #66c0f4; }
+
+/* 开关 */
+.toggles {
+  display: flex;
+  gap: 22px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.toggle input { width: 16px; height: 16px; accent-color: #66c0f4; }
+
+/* 按钮 */
+.actions { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  background: #316282;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background .15s;
+}
+.btn:hover { background: #417a9f; }
+.btn:disabled { background: #2a3f5a; color: #6a7a8a; cursor: not-allowed; }
+.btn-primary { background: #5c7e10; }
+.btn-primary:hover { background: #75971b; }
+.btn-danger { background: #8b3a1a; }
+.btn-danger:hover { background: #a34c28; }
+.btn-ghost { background: transparent; border: 1px solid #4c5844; }
+.btn-ghost:hover { background: #2a3f5a; }
+
+.msg { font-size: 12px; margin-top: 10px; min-height: 16px; color: #99b9d9; }
+.msg.ok { color: #a3d36b; }
+.msg.err { color: #ff7b72; }
+
+/* 错误横幅 */
+.error-banner {
+  background: #4c1d1d;
+  border: 1px solid #8b3a1a;
+  color: #ffb1ab;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.hidden { display: none !important; }
+
+/* 统计 */
+.stats { display: flex; gap: 16px; margin-bottom: 8px; }
+.stat {
+  background: #2a3f5a;
+  border-radius: 4px;
+  padding: 12px 16px;
+  flex: 1;
+  max-width: 220px;
+}
+.stat-val { font-size: 22px; font-weight: 700; color: #66c0f4; }
+.stat-label { font-size: 12px; color: #99b9d9; margin-top: 2px; }
+
+/* 列表头部 */
+.list-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.filter-input { width: 240px; }
+
+/* 游戏列表 */
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.game-item {
+  background: #2a3f5a;
+  border-radius: 4px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.game-item .gname { font-size: 13px; color: #fff; font-weight: 600; word-break: break-word; }
+.game-item .gtime { font-size: 11px; color: #99b9d9; }
+.game-item .gtime strong { color: #a3d36b; }
+
+/* 增量标签（游戏名旁） */
+.delta-tag {
+  display: inline-block;
+  background: #5c7e10;
+  color: #fff;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+/* 增量排行区 */
+.delta-rank {
+  margin: 12px 0;
+  padding: 10px 12px;
+  background: #16202b;
+  border-left: 3px solid #5c7e10;
+  border-radius: 4px;
+}
+.delta-rank h3 {
+  margin: 0 0 8px;
+  color: #a3d36b;
+  font-size: 13px;
+}
+.delta-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 6px;
+}
+.delta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2a3f5a;
+  border-radius: 3px;
+  padding: 6px 10px;
+}
+.delta-item .dname {
+  font-size: 13px;
+  color: #c7d5e0;
+  word-break: break-word;
+  margin-right: 8px;
+}
+.delta-item .dname em {
+  font-style: normal;
+  color: #66c0f4;
+  font-size: 11px;
+}
+.delta-item .ddelta {
+  font-size: 13px;
+  font-weight: 700;
+  color: #a3d36b;
+  white-space: nowrap;
+}
+
+/* 历史对比区 */
+.hist-hint { font-size: 12px; margin-bottom: 12px; }
+.hist-count { font-size: 12px; margin-top: 8px; }
+.hist-bar {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.hist-field { display: flex; flex-direction: column; gap: 4px; }
+.hist-field span { font-size: 12px; color: #99b9d9; }
+.hist-field select {
+  background: #2a3f5a;
+  border: 1px solid #000;
+  border-radius: 3px;
+  color: #fff;
+  padding: 7px 8px;
+  font-size: 12px;
+  min-width: 260px;
+  outline: none;
+}
+
+.compare-result {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+.cmp-meta {
+  background: #16202b;
+  border-left: 3px solid #316282;
+  border-radius: 4px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+.cmp-meta .muted { color: #8f98a0; }
+.cmp-meta strong { color: #fff; }
+
+.cmp-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cmp-stat {
+  background: #2a3f5a;
+  border-radius: 4px;
+  padding: 10px 14px;
+  min-width: 130px;
+}
+.cmp-stat-val { font-size: 18px; font-weight: 700; color: #66c0f4; }
+.cmp-stat-label { font-size: 11px; color: #99b9d9; margin-top: 2px; }
+
+/* 玩家信息 */
+.player {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.player img { width: 84px; height: 84px; border-radius: 4px; }
+.player .pname { font-size: 20px; color: #fff; font-weight: 700; }
+.player .pstate { font-size: 13px; margin-top: 4px; }
+.player .plink { font-size: 12px; color: #66c0f4; margin-top: 6px; text-decoration: none; }
+.player .plink:hover { text-decoration: underline; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #1b2838; }
+::-webkit-scrollbar-thumb { background: #2a3f5a; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #3a5a7a; }

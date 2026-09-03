@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline';" />
+  <title>SteamFT - Steam 监控工具</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">SteamFT</div>
+    <div class="status">
+      <span id="monitorStatus" class="badge badge-off">未启动</span>
+      <span id="lastUpdate" class="muted">最后更新：—</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 配置面板 -->
+    <section class="card config-card">
+      <h2>配置</h2>
+      <div class="grid-form">
+        <label class="field col2">
+          <span>Steam Web API Key</span>
+          <input id="apiKey" type="password" placeholder="前往 https://steamcommunity.com/dev/apikey 申请" />
+        </label>
+        <label class="field">
+          <span>Steam ID（17位）</span>
+          <input id="steamId" type="text" placeholder="76561198000000000" />
+        </label>
+        <label class="field">
+          <span>刷新间隔（分钟）</span>
+          <input id="intervalMin" type="number" min="1" max="1440" value="5" />
+        </label>
+      </div>
+
+      <div class="toggles">
+        <label class="toggle">
+          <input type="checkbox" id="fSummary" />
+          <span>玩家信息 & 在线状态</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="fOwned" />
+          <span>拥有的游戏 & 总时长</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="fRecent" />
+          <span>最近玩的游戏</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="btnFetch" class="btn">立即获取一次</button>
+        <button id="btnStart" class="btn btn-primary">开始监控</button>
+        <button id="btnStop" class="btn btn-danger" disabled>停止监控</button>
+        <button id="btnSave" class="btn btn-ghost">保存配置</button>
+      </div>
+      <div id="configMsg" class="msg"></div>
+    </section>
+
+    <!-- 错误提示 -->
+    <div id="errorMsg" class="error-banner hidden"></div>
+
+    <!-- 玩家信息 -->
+    <section id="summarySection" class="card hidden">
+      <h2>玩家信息</h2>
+      <div id="summaryContent"></div>
+    </section>
+
+    <!-- 总时长统计 -->
+    <section id="ownedSummarySection" class="card hidden">
+      <h2>游戏统计</h2>
+      <div class="stats">
+        <div class="stat"><div class="stat-val" id="statTotalGames">—</div><div class="stat-label">拥有的游戏数</div></div>
+        <div class="stat"><div class="stat-val" id="statTotalTime">—</div><div class="stat-label">总游戏时长</div></div>
+        <div class="stat"><div class="stat-val" id="statDelta">—</div><div class="stat-label" id="statDeltaLabel">比上次增加</div></div>
+      </div>
+      <div id="deltaRank" class="delta-rank hidden">
+        <h3>本次增量排行</h3>
+        <div id="deltaRankList" class="delta-list"></div>
+      </div>
+      <div class="list-head">
+        <h3>拥有的游戏</h3>
+        <input id="ownedFilter" type="search" placeholder="过滤游戏名称..." class="filter-input" />
+      </div>
+      <div id="ownedList" class="game-list"></div>
+    </section>
+
+    <!-- 最近游戏 -->
+    <section id="recentSection" class="card hidden">
+      <h2>最近玩的游戏（近 2 周）</h2>
+      <div class="stats">
+        <div class="stat"><div class="stat-val" id="statRecentCount">—</div><div class="stat-label">近期玩过数量</div></div>
+      </div>
+      <div id="recentList" class="game-list"></div>
+    </section>
+
+    <!-- 历史对比 -->
+    <section id="historySection" class="card">
+      <h2>历史对比</h2>
+      <div class="hist-hint muted">每次拉取都会自动记录，最多保留 500 条。选择两个时间点进行对比。</div>
+      <div class="hist-bar">
+        <label class="hist-field">
+          <span>从</span>
+          <select id="histFrom"></select>
+        </label>
+        <label class="hist-field">
+          <span>到</span>
+          <select id="histTo"></select>
+        </label>
+        <button id="btnCompare" class="btn btn-primary">对比</button>
+        <button id="btnRefreshHist" class="btn btn-ghost">刷新列表</button>
+        <button id="btnClearHist" class="btn btn-danger">清空历史</button>
+      </div>
+      <div id="histCount" class="muted hist-count"></div>
+      <div id="compareResult" class="compare-result"></div>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# ============ Node.js / Electron 相关 ============
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============ Electron 本地缓存（体积大，不可入库）===========
+.electron-cache/
+.electron/
+electron-builder-cache/
+
+# ============ Electron Builder 打包产物 ============
+dist/
+release/
+out/
+
+# ============ 用户数据（API Key、快照、历史）===========
+# 注意：仅在开发时用于排除本地 userData 模拟，实际程序使用 app.getPath('userData')
+*.sqlite
+*.db
+
+# ============ 临时文件 ============
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# ============ IDE ============
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ============ 临时 PowerShell / VBS 脚本 ============
+*.ps1
+*.vbs
